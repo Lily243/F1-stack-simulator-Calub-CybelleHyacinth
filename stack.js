@@ -62,11 +62,61 @@ class Stack {
     }
 }
 
-const stack = new Stack()
+const stack = new Stack();
 
 $(document).ready(function(){
-    $("#stack").prepend(`<div class="row bg-primary push">${stack.push(100)[0]}</div>`);
-    $("#stack").prepend(`<div class="row bg-success push">${stack.push(200)[0]}</div>`);
-    $("#stack").prepend(`<div class="row bg-primary push">${stack.push(300)[0]}</div>`);
-    $("#stack").prepend(`<div class="row bg-success push">${stack.push(400)[0]}</div>`);
+
+    $("#push").click(function(){
+        let value = $("#data").val();
+
+        if(value.trim() === ""){
+            alert("Please enter a value.");
+            return;
+        }
+
+        stack.push(value);
+        $("#stack").prepend(`<div class="row bg-primary push">${value}</div>`);
+
+        $("#data").val("");
+    });
+
+    $("#pop").click(function(){
+        let deletedItem = stack.pop();
+
+        if(deletedItem === undefined){
+            alert("Stack is empty!");
+            return;
+        }
+
+        $("#stack .push").first().remove();
+        $(".popped").empty();
+
+        $(".popped").append(
+            `<div class="row pop text-bg-danger border border-light">${deletedItem}</div>`
+        );
+    });
+
+    $("#peek").click(function(){
+
+        if(stack.isEmpty()){
+            alert("Stack is empty!");
+            return;
+        }
+
+        $("#stack .push").removeClass("border border-warning border-3");
+
+        stack.peek();
+
+        $("#stack .push").first().addClass("border border-warning border-3");
+
+    });
+
+    $("#clear").click(function(){
+
+        stack.clear();
+
+        $("#stack").empty();
+        $(".popped").empty();
+
+    });
 });
